@@ -11,6 +11,7 @@ function init_tabs() {
 	bindTab('history_comments', '.journal.has-notes');
 	bindTab('history_activity', '.journal.has-details');
 	bindTab('history_all', '.journal');
+	bindTab('changesets', '.journal.has-changesets');
 	$('.tab-history.selected').not('#tab-history_all')[0] && $('.tab-history.selected').not('#tab-history_all')[0].click();
 }
 
