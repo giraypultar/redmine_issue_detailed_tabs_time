@@ -1,13 +1,8 @@
-<% content_for :header_tags do
-  stylesheet_link_tag('issue_history_tabs.css', :plugin => :redmine_issue_detailed_tabs_time)
-end
-
-entries = get_issue_history_tab_entries_with changesets
-
-unless entries.empty?
-  tabs = get_issue_history_tabs(entries, journals, changesets).uniq
-  # now we will try to see what tab will be the selected one
-  selected_tab = get_selected_issue_history_tab(tabs)
+<%
+  entries = get_issue_history_tab_entries_with changesets
+  unless entries.empty?
+    tabs = get_issue_history_tabs(entries, journals, changesets).uniq
+    selected_tab = get_selected_issue_history_tab(tabs)
 %>
 
 <div class="tabs">

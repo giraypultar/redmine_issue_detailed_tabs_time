@@ -18,7 +18,7 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
       end
 
       def validTabs
-        ['history_comments','history_all','history_activity','history_private','tabtime_time','changeset']
+        %w(history_comments history_all history_activity history_private tabtime_time changeset)
       end
 
       def get_issue_history_index(index, count)
@@ -58,8 +58,8 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
             tabs.push( {:label => :label_history_tab_activity, :name => 'history_activity'}) if (entry.details.any?) && User.current.allowed_to?(:view_activity,@project,:global => true)
           elsif entry.is_a?(TimeEntry) && User.current.allowed_to?(:view_time_entries, @project)
             tabs.push( {:label => :label_history_tab_time, :name => 'tabtime_time'})
-          elsif entry.is_a?(Changeset) && changesets.include?(entry)
-            tabs.push( {:label => :label_history_tab_time, :name => 'changeset'})
+          elsif entry.is_a?(Changeset) && changesets.include?(entry) && User.current.allowed_to?(:view_changesets, @project)
+            tabs.push( {:label => :label_history_changesets, :name => 'changesets'})
           end
         end
         tabs
@@ -147,10 +147,27 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
       end
 
       def draw_changeset_in_tab(entry, index)
-        "<div id=\"#{index}\" class=\"journal has-changesets\"> This is sparta </div>"
+        content = ""
+        return unless User.current.allowed_to?(:view_changesets, @project)
+        content <<"<div id=\"revision-#{index}\" class=\"journal changeset has-changesets\">"
+          content << '<p>'
+            content << link_to_revision(entry, entry.repository,
+                        :text => "#{l(:label_revision)} #{entry.format_identifier}")
+            content << '<br />'
+            content << '<span class="author">'
+              content << authoring(entry.committed_on, entry.author)
+            content << '</span>'
+          content << '</p>'
+          content << '<div class="wiki">'
+            content << textilizable(entry, :comments)
+          content << '</div>'
+        content << '</div>'
+        content
       end
     end
   end
 end
 
-IssuesHelper.send(:include, RedmineIssueDetailedTabsTimeIssuesHelperPatch::IssuesHelperPatch)
+unless IssuesHelper.included_modules.include? RedmineIssueDetailedTabsTimeIssuesHelperPatch::IssuesHelperPatch
+  IssuesHelper.send :include, RedmineIssueDetailedTabsTimeIssuesHelperPatch::IssuesHelperPatch
+end
