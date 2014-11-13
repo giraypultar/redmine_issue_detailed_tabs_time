@@ -148,19 +148,21 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
 
       def draw_changeset_in_tab(entry, index)
         content = ""
-        return unless User.current.allowed_to?(:view_changesets, @project)
-        content <<"<div id=\"revision-#{index}\" class=\"journal changeset has-changesets\">"
-          content << '<p>'
-            content << link_to_revision(entry, entry.repository,
-                        :text => "#{l(:label_revision)} #{entry.format_identifier}")
-            content << '<br />'
-            content << '<span class="author">'
-              content << authoring(entry.committed_on, entry.author)
-            content << '</span>'
-          content << '</p>'
-          content << '<div class="wiki">'
-            content << textilizable(entry, :comments)
-          content << '</div>'
+        return content unless User.current.allowed_to?(:view_changesets, @project)
+        committer = entry.author.is_a?(User) ? entry.author : entry.committer
+        content <<"<div id=\"revision-#{entry.id}\" class=\"journal changeset has-changesets\">"
+          content << "<h4>"
+            content << link_to("##{index}", {:anchor => "note-#{index}"}, :class => "journal-link")
+            content << avatar(committer, :size => "24")
+            content << content_tag('a', '', :name => "note-#{index}")
+            content << authoring(entry.committed_on, committer, :label => :label_history_time_logged_by)
+          content << '</h4>'
+          content << '<ul class="details">'
+            content << '<li><strong>'+ l(:label_revision) + ":</strong> " + link_to_revision(entry, entry.repository, :text => "#{entry.format_identifier}") + '</li>'
+          content << '</ul>'
+          unless entry.comments.nil? || entry.comments.empty?
+            content << '<li><blockquote><p>' + textilizable(entry, :comments) + '</p></blockquote></li>'
+          end
         content << '</div>'
         content
       end
