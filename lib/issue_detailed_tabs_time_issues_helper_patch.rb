@@ -161,7 +161,7 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
             content << '<li><strong>'+ l(:label_revision) + ":</strong> " + link_to_revision(entry, entry.repository, :text => "#{entry.format_identifier}") + '</li>'
           content << '</ul>'
           unless entry.comments.nil? || entry.comments.empty?
-            content << '<li><blockquote><p>' + textilizable(entry, :comments) + '</p></blockquote></li>'
+            content << '<blockquote><p>' + textilizable(entry, :comments) + '</p></blockquote>'
           end
         content << '</div>'
         content
