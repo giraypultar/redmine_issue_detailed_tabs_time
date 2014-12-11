@@ -1,13 +1,8 @@
-<% content_for :header_tags do
-  stylesheet_link_tag('issue_history_tabs.css', :plugin => :redmine_issue_detailed_tabs_time)
-end
-
-entries = get_issue_history_tab_entries()
-
-unless entries.empty?
-  tabs = get_issue_history_tabs(entries, journals).uniq
-  # now we will try to see what tab will be the selected one
-  selected_tab = get_selected_issue_history_tab(tabs)
+<%
+  entries = get_issue_history_tab_entries_with changesets
+  unless entries.empty?
+    tabs = get_issue_history_tabs(entries, journals, changesets).uniq
+    selected_tab = get_selected_issue_history_tab(tabs)
 %>
 
 <div class="tabs">
@@ -23,7 +18,7 @@ unless entries.empty?
 	</ul>
 </div>
 
-<%= c = draw_entries_in_issue_history_tab(entries, journals).html_safe %>
+<%= draw_entries_in_issue_history_tab(entries, journals).html_safe %>
 <% end %>
 <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
 
