@@ -131,7 +131,7 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
           c << "<div id='time-#{timelog.id}' class='journal has-time'>"
             c << "<h4>"
               c << link_to("##{index}", {:anchor => "note-#{index}"}, :class => "journal-link")
-              c << avatar(timelog.user, :size => "24")
+              c << (avatar(timelog.user, :size => "24") || '') unless timelog.user.is_a?(AnonymousUser)
               c << content_tag('a', '', :name => "note-#{index}")
               c << authoring(timelog.created_on, timelog.user, :label => :label_history_time_logged_by)
             c << '</h4>'
@@ -153,7 +153,7 @@ module RedmineIssueDetailedTabsTimeIssuesHelperPatch
         content <<"<div id=\"revision-#{entry.id}\" class=\"journal changeset has-changesets\">"
           content << "<h4>"
             content << link_to("##{index}", {:anchor => "note-#{index}"}, :class => "journal-link")
-            content << avatar(committer, :size => "24")
+            content << avatar(committer, :size => "24") unless entry.user.is_a?(AnonymousUser)
             content << content_tag('a', '', :name => "note-#{index}")
             content << authoring(entry.committed_on, committer, :label => :label_history_time_logged_by)
           content << '</h4>'
