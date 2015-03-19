@@ -131,10 +131,10 @@ module RedmineIssueDetailedTabsTime
                 c << '</h4>'
                 c << '<ul class="details">'
                   c << '<li><strong>'+ l(:label_history_time_spent) + ":</strong> " + html_hours("%.2f" % timelog.hours) + " " + l(:label_history_time_hours_on) + " " + h(timelog.activity) + '</li>'
-                  unless timelog.comments.nil? || timelog.comments.empty?
-                    c << '<li><blockquote><p>' + timelog.comments + '</p></blockquote></li>'
-                  end
                 c << '</ul>'
+                unless timelog.comments.nil? || timelog.comments.empty?
+                  c << '<blockquote><p>' + timelog.comments + '</p></blockquote>'
+                end
               c << '</div>'
             end
             c
