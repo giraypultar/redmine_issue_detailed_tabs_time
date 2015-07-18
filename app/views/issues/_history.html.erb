@@ -1,4 +1,7 @@
 <%
+   if (!(defined?  changesets))
+     changesets=Array.new
+  end
   entries = get_issue_history_tab_entries_with changesets
   unless entries.empty?
     tabs = get_issue_history_tabs(entries, journals, changesets).uniq
