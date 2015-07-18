@@ -1,0 +1,14 @@
+tr:
+  label_history_tab_all: Hepsi
+  label_history_tab_activity: Faaliyet
+  label_history_tab_comments: Notlar
+  label_history_tab_private: Özel
+  label_history_time_spent: "Harcanan Zaman"
+  label_history_time_hours_on: saat
+  label_history_time_logged_by: "%{author} tarafından %{age} zaman önce"
+  label_history_tab_time: "Zaman Kaydı"
+  label_history_changesets: "İlgili Sürümler"
+  label_tabtime_questions: Sorular
+  permission_view_all: "Hepsini gör"
+  permission_view_comments: "Notları gör"
+  permission_view_activity: "Faaliyetleri gör"
